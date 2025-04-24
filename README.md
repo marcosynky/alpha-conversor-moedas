@@ -1,4 +1,4 @@
-# Aulas de Spring - Aplicativo Spring Boot
+# Aulas de Spring - Aplicativos Spring Boot
 
 ## 📖 Sobre
 
