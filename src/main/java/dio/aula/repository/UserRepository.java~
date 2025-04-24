@@ -1,0 +1,8 @@
+package dio.aula.repository;
+
+import dio.aula.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Integer> {
+    // Aqui você já tem todos os métodos básicos como save(), findById(), etc.
+}
