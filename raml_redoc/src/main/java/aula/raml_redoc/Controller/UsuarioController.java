@@ -1,7 +1,7 @@
-package aula.swagger.controller;
+package aula.raml_redoc.Controller;
 
-import aula.swagger.model.Usuario;
-import aula.swagger.repository.UsuarioRepository;
+import aula.raml_redoc.model.Usuario;
+import aula.raml_redoc.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,12 +35,6 @@ public class UsuarioController {  // Definição da classe controladora
     // Método para criar um novo usuário (POST)
     @PostMapping()  // Mapeia a requisição POST para a URL /users
     public void postUser(@RequestBody Usuario usuario){  // O corpo da requisição (um objeto Usuario) é mapeado para o parâmetro
-        repository.save(usuario);  // Chama o método save() do repositório para salvar o novo usuário no banco de dados
-    }
-
-    // Método para atualizar um usuário (PUT)
-    @PutMapping ()  // Mapeia a requisição PUT para a URL /users
-    public void putUser(@RequestBody Usuario usuario){  // O corpo da requisição (um objeto Usuario) é mapeado para o parâmetro
         repository.save(usuario);  // Chama o método save() do repositório para salvar o novo usuário no banco de dados
     }
 }
