@@ -1,6 +1,6 @@
-package aula_swagger2.swagger.api.repository;
+package aula_hadlers.repository;
 
-import aula_swagger2.swagger.api.model.Usuario;
+import aula_hadlers.model.Usuario;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

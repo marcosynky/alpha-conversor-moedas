@@ -1,4 +1,4 @@
-package aula_swagger2.swagger.api.model;
+package aula_hadlers.model;
 
 // Classe Usuario que representa um usuário no sistema
 public class Usuario {
