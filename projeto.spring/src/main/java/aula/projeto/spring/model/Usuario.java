@@ -1,7 +1,5 @@
 package aula.projeto.spring.model;
 
-
-
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -15,15 +13,15 @@ public class Usuario {
     private String username;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "usuario_role",
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles;  // Relacionamento muitos-para-muitos com a tabela Role
 
-    // Getters e Setters
+    // Getters e setters
     public Long getId() {
         return id;
     }

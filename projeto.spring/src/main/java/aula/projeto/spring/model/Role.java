@@ -13,9 +13,9 @@ public class Role {
     private String roleName;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<Usuario> usuarios;
+    private Set<Usuario> usuarios;  // Relacionamento muitos-para-muitos com a tabela Usuario
 
-    // Getters e Setters
+    // Getters e setters
     public Long getId() {
         return id;
     }
