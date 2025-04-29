@@ -3,8 +3,10 @@ package aula.spring_security.configuration;
 import aula.spring_security.model.Usuario;
 import aula.spring_security.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +16,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SecurityDataBaseService implements org.springframework.security.core.userdetails.UserDetailsService {
+@Primary
+public class SecurityDataBaseService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
