@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 @Controller
 public class LoginController {
 
@@ -58,6 +59,14 @@ public class LoginController {
         ur.save(usuario);
         return "redirect:/login"; // Redireciona para a página de login após o cadastro
     }
-}
+
+    @GetMapping ("/sair")
+    public String sair( HttpServletResponse response) {
+            return "redirect:/login"; // Redireciona para a página de login
+
+        }
+    }
+
+
 
 
