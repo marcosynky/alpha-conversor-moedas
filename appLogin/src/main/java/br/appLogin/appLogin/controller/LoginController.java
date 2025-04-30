@@ -29,16 +29,16 @@ public class LoginController {
 
 
     @PostMapping("/logar")
-    public String loginUsuario(Usuario usuario, HttpServletResponse response) {
-        Usuario user = ur.login(usuario.getEmail(), usuario.getSenha());
-        if (user != null) {
+    public String loginUsuario(Usuario usuario, Model model, RedirectAttributes redirectAttributes) {
+        Usuario userlogado = ur.login(usuario.getEmail(), usuario.getSenha());
+        if (userlogado != null) {
             return "redirect:/home"; // Redireciona para a página home se o login for bem-sucedido
         } else {
-            return "redirect:/login"; // Redireciona para a página de login em caso de falha no login
+            // Usando RedirectAttributes para passar a mensagem de erro
+            redirectAttributes.addFlashAttribute("erro", "Email ou senha incorretos");
+            return "redirect:/login"; // Redireciona para a página de login com a mensagem de erro
         }
     }
-
-
 
 
     @GetMapping("/cadastroUsuario")

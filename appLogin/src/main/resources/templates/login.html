@@ -59,6 +59,10 @@
         <button type="submit" class="btn btn-login">Entrar</button>
     </form>
 
+    <!-- Exibe a mensagem de erro, se houver -->
+    <div th:if="${erro != null}">
+        <p th:text="${erro}" style="color: red;"></p> <!-- Mensagem de erro em vermelho -->
+    </div>
 
     <!-- Botão para redirecionar para a tela de cadastro -->
     <a href="/cadastroUsuario" class="btn btn-cadastro">Criar Conta</a>
