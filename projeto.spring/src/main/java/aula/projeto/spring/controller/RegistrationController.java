@@ -25,11 +25,9 @@ public class RegistrationController {
 
     @PostMapping("/create")
     public String createUsers() {
-        // Criptografando a senha de Janeth
         String janethPassword = passwordEncoder.encode("1234");
         String marcoAntonioPassword = passwordEncoder.encode("123");
 
-        // Buscando os papéis
         Role roleUser = roleRepository.findByRoleName("ROLE_USER");
         Role roleManager = roleRepository.findByRoleName("ROLE_MANAGER");
 

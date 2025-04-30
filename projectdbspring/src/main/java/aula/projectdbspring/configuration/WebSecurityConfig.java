@@ -1,8 +1,10 @@
-package aula.projeto.spring.configuration;
+package aula.projectdbspring.configuration;
 
-import aula.projeto.spring.model.Usuario;
-import aula.projeto.spring.repository.UsuarioRepository;
+
+import aula.projectdbspring.model.Usuario;
+import aula.projectdbspring.repository.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -65,16 +67,17 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/login").permitAll() // Permite acesso à página de login
-                        .requestMatchers("/css/**", "/js/**", "/img/**").permitAll() // Permite acesso aos arquivos estáticos
-                        .anyRequest().authenticated() // Todas as outras requisições devem estar autenticadas
+
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/register").permitAll()  // Permite acesso à página de registro
+                        .requestMatchers("/home").hasRole("USER")  // Requer role para acessar a página inicial
+                        .requestMatchers("/admin").hasRole("ADMIN")  // Requer role para acessar a página de administração
+                        .requestMatchers("/login").permitAll()  // Permite acesso à página de login
+                        .requestMatchers("/logout").permitAll()  // Permite logout em qualquer URL
+
+
                 )
-                .formLogin(form -> form
-                        .loginPage("/login")  // Página de login personalizada
-                        .permitAll() // Permite acesso à página de login
-                        .defaultSuccessUrl("/home", true) // Redireciona para a página inicial após o login bem-sucedido
-                )
+
                 .logout(logout -> logout
                         .permitAll() // Permite logout em qualquer URL
                         .logoutUrl("/logout") // URL de logout personalizada
@@ -82,5 +85,9 @@ public class WebSecurityConfig {
                 );
         return http.build();
     }
-}
+
+
+    }
+
+
 
