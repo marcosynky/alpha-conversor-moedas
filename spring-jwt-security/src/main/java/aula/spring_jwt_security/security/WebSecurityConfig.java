@@ -2,40 +2,41 @@ package aula.spring_jwt_security.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    // Definindo o UserDetailsService com usuários em memória
+    // Configuração de segurança, substituindo o método 'configure' do Adapter
     @Bean
-    public UserDetailsService userDetailsService() {
-        var user = User.withUsername("user")
-                .password(passwordEncoder().encode("userpassword")) // Senha para o usuário comum
-                .roles("USER")
-                .build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .requestMatchers("/h2-console/**")
+                .permitAll()
+                .requestMatchers(SWAGGER_WHITELIST)
+                .permitAll() // Permite o acesso sem autenticação
+                .requestMatchers("/login") // Permite o acesso sem autenticação
+                .permitAll()
+                .anyRequest().authenticated() // Exige autenticação para todas as outras requisições
+                .and();
 
-        var admin = User.withUsername("admin")
-                .password(passwordEncoder().encode("adminpassword")) // Senha para o admin
-                .roles("ADMIN")
-                .build();
+        http.formLogin();
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
 
-        return new InMemoryUserDetailsManager(user, admin); // Criando o manager com usuários
+
+        return http.build();
     }
 
-    // Definindo o password encoder
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     // Lista de URLs permitidas (exemplo: Swagger, H2 console)
     private static final String[] SWAGGER_WHITELIST = {
@@ -49,18 +50,28 @@ public class WebSecurityConfig {
             "/webjars/**"
     };
 
-    // Configuração de segurança HTTP (Spring Security 6.x)
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable() // Desabilitar CSRF (não recomendado para produção)
-                .authorizeHttpRequests()
-                .requestMatchers(SWAGGER_WHITELIST).permitAll() // Permitir acesso ao Swagger
-                .requestMatchers("/login", "/register").permitAll() // Permitir login e registro sem autenticação
-                .requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN") // Apenas admin pode acessar /admin
-                .requestMatchers(HttpMethod.GET, "/user").hasRole("USER") // Apenas usuário pode acessar /user
-                .anyRequest().authenticated() // Outras rotas necessitam de autenticação
-                .and()
-                .formLogin() // Configuração para o login com página customizada
-                .loginPage("/login") // Página customizada de login
-                .permitAll();
+
+    // Configuração do serviço de usuários em memória
+    @Bean
+    public UserDetailsService userDetailsService() {
+        // Cria um usuário fixo em memória
+        UserDetails user = User.withUsername("user")
+                .password(passwordEncoder().encode("123"))
+                .roles("USER")
+                .build();
+
+        return username -> {
+            if ("user".equals(username)) {
+                return user;  // Retorna o usuário configurado se o nome de usuário for "user"
+            }
+            throw new RuntimeException("User not found");
+        };
+    }
+
+    // Define o PasswordEncoder para codificação de senha
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
+

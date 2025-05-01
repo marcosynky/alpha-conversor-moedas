@@ -1,26 +1,24 @@
 package aula.spring_jwt_security.security;
 
 
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "security.config") // Prefixo do arquivo de propriedades
+@ConfigurationProperties(prefix = "security.config")
 public class SecurityConfig {
-    public static String PREFIX; // Prefixo do token
-    public static String KEY; // Chave do token
-    public static Long EXPIRATION; // Tempo de expiração do token
+    public static String PREFIX;
+    public static String KEY;
+    public static Long EXPIRATION;
 
-    public void setPREFIX(String prefix) { // Múltiplos argumentos
-        PREFIX = prefix; // Converte para uma lista
+    public void setPrefix(String prefix){
+        PREFIX = prefix;
     }
-
-    public void setKEY(String key) {
+    public void setKey(String key){
         KEY = key;
     }
-
-    public void setEXPIRATION(Long expiration) {
+    public void setExpiration(Long expiration){
         EXPIRATION = expiration;
     }
-
 }

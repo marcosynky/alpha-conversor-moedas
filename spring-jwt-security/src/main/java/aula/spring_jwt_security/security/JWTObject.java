@@ -1,19 +1,15 @@
 package aula.spring_jwt_security.security;
 
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class JWTObject {
-    private String subject; // Nome do usuário
-    private Date issueAt; // Data de emissão
-    private Date expiration; // Data de expiração
-    private List<String> roles; // Roles do usuário
-
-
-    public void setRoles(String... roles) { // Múltiplos argumentos
-        this.roles = Arrays.asList(roles); // Converte para uma lista
-    }
+    private String subject; //nome do usuario
+    private Date issuedAt; //data de criação do token
+    private Date expiration; // data de expiração do token
+    private List<String> roles; //perfis de acesso
 
     public String getSubject() {
         return subject;
@@ -23,12 +19,12 @@ public class JWTObject {
         this.subject = subject;
     }
 
-    public Date getIssueAt() {
-        return issueAt;
+    public Date getIssuedAt() {
+        return issuedAt;
     }
 
-    public void setIssueAt(Date issueAt) {
-        this.issueAt = issueAt;
+    public void setIssuedAt(Date issuedAt) {
+        this.issuedAt = issuedAt;
     }
 
     public Date getExpiration() {
@@ -45,5 +41,9 @@ public class JWTObject {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public void setRoles(String... roles){
+        this.roles = Arrays.asList(roles);
     }
 }
