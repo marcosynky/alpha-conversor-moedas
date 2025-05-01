@@ -15,9 +15,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder encoder;
     public void createUser(User user){
-        String pass = user.getPassword();
+        String pass = user.getUsername();
         //criptografando antes de salvar no banco
-        user.setPassword(encoder.encode(pass));
+        user.setUsername(encoder.encode(pass));
         repository.save(user);
     }
 }

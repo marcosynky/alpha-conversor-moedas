@@ -17,32 +17,43 @@ import java.util.Date;
 
 @RestController
 public class LoginController {
+
     @Autowired
     private PasswordEncoder encoder;
-    @Autowired
-    private SecurityConfig securityConfig;
+
     @Autowired
     private UserRepository repository;
 
     @PostMapping("/login")
     public Sessao logar(@RequestBody Login login){
+        // Encontrar o usuário pelo nome de usuário
         User user = repository.findByUsername(login.getUsername());
-        if(user!=null) {
-            boolean passwordOk =  encoder.matches(login.getPassword(), user.getPassword());
+
+        // Verificar se o usuário existe
+        if(user != null) {
+            // Comparar a senha fornecida com a senha armazenada (usando PasswordEncoder)
+            boolean passwordOk = encoder.matches(login.getPassword(), user.getUsername());
+
             if (!passwordOk) {
                 throw new RuntimeException("Senha inválida para o login: " + login.getUsername());
             }
-            //Estamos enviando um objeto Sessão para retornar mais informações do usuário
+
+            // Criando a sessão para enviar o token JWT
             Sessao sessao = new Sessao();
             sessao.setLogin(user.getUsername());
 
+            // Criando o objeto JWT
             JWTObject jwtObject = new JWTObject();
-            jwtObject.setIssuedAt(new Date(System.currentTimeMillis()));
-            jwtObject.setExpiration((new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION)));
-            jwtObject.setRoles(user.getRoles());
-            sessao.setToken(JWTCreator.create(SecurityConfig.PREFIX, SecurityConfig.KEY, jwtObject));
+            jwtObject.setIssuedAt(new Date(System.currentTimeMillis()));  // Data de emissão
+            jwtObject.setExpiration(new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION));  // Definindo a expiração do token
+            jwtObject.setRoles(user.getRoles().stream().map(role -> role.getName()).toArray(String[]::new)); // Definindo os papéis do usuário
+
+            // Gerando o token JWT usando o JWTCreator
+            String token = JWTCreator.create(SecurityConfig.PREFIX, SecurityConfig.KEY, jwtObject);
+            sessao.setToken(token);  // Definindo o token JWT na sessão
+
             return sessao;
-        }else {
+        } else {
             throw new RuntimeException("Erro ao tentar fazer login");
         }
     }

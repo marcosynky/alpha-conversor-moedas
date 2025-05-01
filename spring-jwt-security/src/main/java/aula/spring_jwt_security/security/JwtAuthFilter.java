@@ -1,57 +1,39 @@
 package aula.spring_jwt_security.security;
 
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import aula.spring_jwt_security.security.JwtTokenProvider;
+import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
+@Component // Anotação para ser injetada pelo Spring
 public class JwtAuthFilter extends OncePerRequestFilter {
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public JwtAuthFilter(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        //obtem o token da request com AUTHORIZATION
-        String token =  request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
-        //esta implementação só esta validando a integridade do token
-        try {
-            if(token!=null && !token.isEmpty()) {
-                JWTObject tokenObject = JWTCreator.create(token,SecurityConfig.PREFIX, SecurityConfig.KEY);
 
-                List<SimpleGrantedAuthority> authorities = authorities(tokenObject.getRoles());
+        String token = jwtTokenProvider.resolveToken(request); // Resolve o token a partir do cabeçalho da requisição
 
-                UsernamePasswordAuthenticationToken userToken =
-                        new UsernamePasswordAuthenticationToken(
-                                tokenObject.getSubject(),
-                                null,
-                                authorities);
-
-                SecurityContextHolder.getContext().setAuthentication(userToken);
-
-            }else {
-                SecurityContextHolder.clearContext();
-            }
-            filterChain.doFilter(request, response);
-        }catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException e) {
-            e.printStackTrace();
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            return;
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            // Se o token for válido, autentica o usuário
+            var authentication = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication((Authentication) authentication);
         }
-    }
-    private List<SimpleGrantedAuthority> authorities(List<String> roles){
-        return roles.stream().map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+
+        filterChain.doFilter(request, response);
     }
 }
