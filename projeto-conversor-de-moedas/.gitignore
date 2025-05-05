@@ -6,6 +6,8 @@ build/
 !**/src/test/**/build/
 # Ignorar arquivos de configuração sensíveis
 src/main/resources/application.properties
+src/services/ConversaoService.java
+
 
 ### STS ###
 .apt_generated
