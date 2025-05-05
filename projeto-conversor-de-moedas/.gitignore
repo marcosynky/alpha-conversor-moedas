@@ -7,6 +7,7 @@ build/
 !**/src/test/**/build/
 # Ignorar arquivos de configuração sensíveis
 src/main/resources/application.properties
+# Ignorar o arquivo específico ConversaoService.java dentro de service
 src/com.example.demo/service/ConversaoService.java
 
 
