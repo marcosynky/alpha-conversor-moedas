@@ -1,4 +1,4 @@
-# conversor-moedas - Aplicativo Spring Boot
+# Conversor-moedas - Aplicativo Spring Boot
 
 ## 📖 Sobre
 **conversor-moedas** é uma API RESTful desenvolvida com **Spring Boot** para realizar a conversão de moedas utilizando taxas de câmbio obtidas de uma API externa. Este projeto foi desenvolvido por **Marco Antônio** com o intuito de proporcionar uma solução simples e eficaz para conversão de valores entre diferentes moedas.
