@@ -11,7 +11,7 @@ import java.net.URL;
 @Service
 public class ConversaoService {
 
-    private static final String API_KEY = "cb25cd6a06b7c4b2a31e92cb";  // Substitua pela sua chave da API
+    private static final String API_KEY = "";  // Substitua pela sua chave da API
     private static final String API_URL = "https://v6.exchangerate-api.com/v6/" + API_KEY + "/latest/USD";  // USD como base
 
     public double converterMoeda(String moedaOrigem, double valor, String moedaDestino) {
