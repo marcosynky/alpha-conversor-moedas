@@ -1,3 +1,4 @@
+# Ignorar arquivos fora do diretório do repositório
 HELP.md
 .gradle
 build/
@@ -39,3 +40,4 @@ out/
 
 ### VS Code ###
 .vscode/
+../*
