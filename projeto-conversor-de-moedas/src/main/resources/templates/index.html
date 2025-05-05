@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moedas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <!-- Exibindo a imagem PNG no lugar do título -->
+    <div class="text-center">
+        <img src="/logo.png" alt="Logo do Conversor de Moedas" style="max-width: 500px; max-height: 250px;">
+    </div>
+
+    <form action="/converter" method="get">
+        <div class="form-group">
+            <label for="moedaOrigem">Moeda de Origem:</label>
+            <!-- Campo select para escolher a moeda de origem -->
+            <select class="form-control" id="moedaOrigem" name="moedaOrigem" required>
+                <option value="USD">USD (Dólar Americano)</option>
+                <option value="EUR">EUR (Euro)</option>
+                <option value="BRL">BRL (Real Brasileiro)</option>
+                <option value="GBP">GBP (Libra Esterlina)</option>
+                <option value="JPY">JPY (Iene Japonês)</option>
+                <option value="CNY">CNY (Yuan Chinês)</option>  <!-- Substituído AUD por CNY -->
+                <option value="CAD">CAD (Dólar Canadense)</option>
+                <!-- Adicione mais moedas conforme necessário -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="valor">Valor:</label>
+            <input type="number" class="form-control" id="valor" name="valor" placeholder="Valor a ser convertido" required>
+        </div>
+
+        <div class="form-group">
+            <label for="moedaDestino">Moeda de Destino:</label>
+            <!-- Campo select para escolher a moeda de destino -->
+            <select class="form-control" id="moedaDestino" name="moedaDestino" required>
+                <option value="USD">USD (Dólar Americano)</option>
+                <option value="EUR">EUR (Euro)</option>
+                <option value="BRL">BRL (Real Brasileiro)</option>
+                <option value="GBP">GBP (Libra Esterlina)</option>
+                <option value="JPY">JPY (Iene Japonês)</option>
+                <option value="CNY">CNY (Yuan Chinês)</option>  <!-- Substituído AUD por CNY -->
+                <option value="CAD">CAD (Dólar Canadense)</option>
+                <!-- Adicione mais moedas conforme necessário -->
+            </select>
+        </div>
+
+        <!-- Botão com cor verde usando a classe 'btn-success' -->
+        <button type="submit" class="btn btn-success btn-block">Converter</button>
+    </form>
+
+    <div class="mt-4">
+        <h3>Resultado:</h3>
+        <!-- Exibindo o resultado da conversão -->
+        <p th:text="${resultado}"></p>
+    </div>
+</div>
+</body>
+</html>
